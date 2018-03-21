@@ -1,5 +1,8 @@
 # nano temp files
 *~
+*nano.save*
+#sqlite db
+posts.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
