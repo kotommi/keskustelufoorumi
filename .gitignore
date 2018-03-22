@@ -1,6 +1,8 @@
 # nano temp files
 *~
 *nano.save*
+# ide files
+.idea*
 #sqlite db
 posts.db
 
