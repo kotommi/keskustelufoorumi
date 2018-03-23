@@ -1,5 +1,7 @@
 # Keskustelufoorumi
 
+## Live version
+(https://tsoha-foorumi.herokuapp.com/)
 
 ## Toimintoja:
 * Käyttäjien rekisteröityminen
