@@ -3,7 +3,7 @@
 {% block body %}
     <ul>
         {% for post in posts %}
-            <li> {{ post.name + ": " + post.content }} </li>
+            <li> {{ post.name + ": " + post.content }} <a href="{{ url_for("post_edit", post_id = post.id) }}">edit</a> </li>
         {% endfor %}
     </ul>
 {% endblock %}

@@ -1,10 +1,13 @@
 from flask import Flask, render_template
+
 app = Flask(__name__)
 
+
 class Item:
-	def __init__(self, name):
-		self.name = name
-		
+    def __init__(self, name):
+        self.name = name
+
+
 nimi = "Kaksi sanaa"
 
 lista = [1, 1, 2, 3, 5, 8, 11]
@@ -18,16 +21,15 @@ esineet.append(Item("Neljäs"))
 
 @app.route("/")
 def hello():
-	return render_template("index.html")
+    return render_template("index.html")
+
 
 @app.route("/demo")
 def content():
-	return render_template("demo.html", nimi=nimi, lista=lista, esineet=esineet)
+    return render_template("demo.html", nimi=nimi, lista=lista, esineet=esineet)
+
 
 if __name__ == "__main__":
-	app.run(debug=True)
-
-
+    app.run(debug=True)
 
 print("yelo")
-
