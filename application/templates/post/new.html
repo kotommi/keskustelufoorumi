@@ -2,8 +2,8 @@
 
 {% block body %}
     <form method="POST" action="{{ url_for('post_create') }}">
-        <input type="text" name="name"/><br/>
-        <input type="text" name="content"/><br/>
+       <p>Title</p> <input type="text" name="name"/><br/>
+       <p>Content</p> <input type="text" name="content"/><br/>
         <input type="submit" value="Submit post"/>
     </form>
 {% endblock %}
