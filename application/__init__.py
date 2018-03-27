@@ -2,7 +2,13 @@ import flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///posts.db"
+
+import os
+
+if os.environ.get("HEROKU"):
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///posts.db"
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -35,4 +41,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-db.create_all()
+try:
+    db.create_all()
+except:
+    pass
