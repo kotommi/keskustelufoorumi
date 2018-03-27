@@ -1,6 +1,6 @@
 from application import app, db
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required
+from flask_login import login_required, current_user
 from application.posts.models import Post
 from application.posts.forms import PostForm
 
@@ -42,6 +42,7 @@ def post_create():
     if not form.validate():
         return render_template("post/new.html", form=form)
     p = Post(form.name.data, form.content.data)
+    p.account_id = current_user.id
     db.session().add(p)
     db.session().commit()
     return redirect(url_for("post_index"))
