@@ -1,5 +1,6 @@
 import flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import engine
 
 app = flask.Flask(__name__)
 
@@ -46,3 +47,4 @@ try:
     db.create_all()
 except:
     pass
+engine.dispose()
