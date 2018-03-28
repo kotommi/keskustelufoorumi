@@ -16,18 +16,23 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-from application import views
-from application.posts import views
-from application.posts import models
+from application.category import models
+from application.category import views
 
 from application.auth import models
 from application.auth import views
+
+from application import views
+from application.posts import views
+from application.posts import models
 
 # login
 from application.auth.models import User
 from os import urandom
 
 app.config["SECRET_KEY"] = urandom(32)
+
+db.create_all()
 
 from flask_login import LoginManager
 
@@ -41,9 +46,3 @@ login_manager.login_message = "Please login to use this functionality."
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-
-
-try:
-    db.create_all()
-except:
-    pass
