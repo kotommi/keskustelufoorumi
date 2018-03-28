@@ -47,5 +47,3 @@ try:
     db.create_all()
 except:
     pass
-engine = engine.Engine
-engine.dispose()
