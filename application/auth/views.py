@@ -19,10 +19,10 @@ def auth_login():
         return render_template("auth/loginform.html", form=form, error="No such username or password")
 
     login_user(user)
-    return redirect(url_for("index"))
+    return redirect(url_for("category_index"))
 
 
 @app.route("/auth/logout")
 def auth_logout():
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("category_index"))
