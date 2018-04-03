@@ -5,7 +5,7 @@ from application.category.models import Category
 
 @app.route("/", methods=["GET"])
 def category_index():
-    return render_template("category/index.html", categories=db.Category.queryAll())
+    return render_template("category/index.html", categories=db.Category.query.all())
 
 
 @app.route("/c/<category_id>/")
