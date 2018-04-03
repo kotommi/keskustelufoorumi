@@ -12,7 +12,7 @@ class Category(db.Model):
     title = db.Column(db.String(144), nullable=False)
     description = db.Column(db.String(255), nullable=False)
 
-    posts = db.relationship("Post", backref="account", lazy=True)
+    posts = db.relationship("Post", backref="category", lazy=True)
 
     def __init__(self, title, description):
         """
