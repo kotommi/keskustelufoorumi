@@ -4,6 +4,7 @@ from flask_login import login_user, logout_user
 from application import app
 from application.auth.models import User
 from application.auth.forms import LoginForm
+from application.category.models import Category
 
 
 @app.route("/auth/login", methods=["GET", "POST"])
