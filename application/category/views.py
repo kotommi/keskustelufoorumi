@@ -3,7 +3,7 @@ from flask import redirect, render_template, request, url_for
 from application.category.models import Category
 
 
-@app.route("/index", methods=["GET"])
+@app.route("/", methods=["GET"])
 def category_index():
     return render_template("category/index.html", categories=db.Category.queryAll())
 
