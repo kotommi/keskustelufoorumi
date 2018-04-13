@@ -14,13 +14,13 @@ class LoginForm(FlaskForm):
 class CreateForm(FlaskForm):
     username = StringField("Username",
                            [validators.Length(min=4, max=16, message="Name has to be at least 4 characters"),
-                            validators.any_of(User.find_usernames(),
-                                              message="Name already in use")])
+                            validators.none_of(values=User.find_usernames(),
+                                               message="Name already in use")])
     password = PasswordField("Password",
-                             [validators.Length(min=8, max=32, message="Password has to be at least 8 characters")])
+                             [validators.Length(min=8, max=32, message="Password has to be at least 8 characters"),
+                              validators.EqualTo('repeat_password', message="Passwords must match")])
     repeat_password = PasswordField(
-        "Repeat password", [validators.EqualTo(password, message="Passwords must match")])
+        "Repeat password")
 
-
-class Meta:
-    csrf = False
+    class Meta:
+        csrf = False

@@ -3,8 +3,8 @@
 {% block body %}
     <ul>
         {% for category in categories %}
-            <li><a href="{{ url_for("category_list", category_id = category.id) }}">{{ category.title }} + ". "
-                + {{ category.description }}</a>
+            <li>
+                <a href="{{ url_for("category_list", category_id = category.id) }}">{{ category.title }}: {{ category.description }}</a>
             </li>
         {% endfor %}
     </ul>

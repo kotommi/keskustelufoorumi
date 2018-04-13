@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <a href="{{ url_for("thread_new", cat_id=category_id) }}">Create a new thread</a>
+    <ul>
+        {% for thread in threads %}
+            <li>{{ thread.title }} by thread.user_id</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

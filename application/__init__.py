@@ -26,6 +26,8 @@ from application.posts import views
 from application.posts import models
 
 from application.threads.models import Thread
+from application.threads import views
+from application.threads import models
 
 # login
 from application.auth.models import User

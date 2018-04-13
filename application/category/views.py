@@ -11,4 +11,8 @@ def category_index():
 
 @app.route("/c/<category_id>/")
 def category_list(category_id):
-    return render_template()
+    cat = Category.query.get(category_id)
+    if not cat:
+        return redirect(url_for("category_index"))
+
+    return render_template("category/category.html", threads=cat.threads, category_id=category_id)

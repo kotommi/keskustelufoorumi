@@ -1,9 +1,38 @@
 {% extends "layout.html" %}
 
+{% macro with_errors(field) %}
+    <div class="form_field">
+        {% if field.errors %}
+            {% set css_class = 'has_error ' + kwargs.pop('class', '') %}
+            {{ field(class=css_class, **kwargs) }}
+            <ul class="errors">{% for error in field.errors %}
+                <li>{{ error|e }}</li>{% endfor %}</ul>
+        {% else %}
+            {{ field(**kwargs) }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
 {% block body %}
-    <form method="POST" action="{{ url_for('thread_create') }}">
-        <input type="text" name="name"/><br/>
-        <input type="text" name="content"/><br/>
-        <input type="submit" value="Submit thread"/>
+    <form method="POST" action="{{ url_for("thread_new", cat_id=cat_id) }}">
+        <table>
+            <tr>
+                <td>{{ form.title.label }}</td>
+                <td>
+                    {{ with_errors(form.title) }}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ form.content.label }}</td>
+                <td>
+                    {{ with_errors(form.content) }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Submit"/>
+                </td>
+            </tr>
+        </table>
     </form>
 {% endblock %}
