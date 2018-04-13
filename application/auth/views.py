@@ -3,8 +3,7 @@ from flask_login import login_user, logout_user
 
 from application import app
 from application.auth.models import User
-from application.auth.forms import LoginForm
-from application.category.models import Category
+from application.auth.forms import LoginForm, CreateForm
 
 
 @app.route("/auth/login", methods=["GET", "POST"])
@@ -21,6 +20,15 @@ def auth_login():
 
     login_user(user)
     return redirect(url_for("category_index"))
+
+
+@app.route("/auth/create", methods=["GET", "POST"])
+def auth_create():
+    if request.method == "GET":
+        return render_template("auth/createform.html", form=CreateForm())
+
+    form = LoginForm(request.form)
+    # validointi
 
 
 @app.route("/auth/logout")
