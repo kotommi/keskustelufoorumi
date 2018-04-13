@@ -41,3 +41,14 @@ class User(Base):
             response.append({row[1]})
 
         return response
+
+    @staticmethod
+    def find_users_with_no_posts():
+        statement = text(
+            "SELECT account.id, account.name FROM account LEFT JOIN Post ON Post.account_id = account.id GROUP  BY account.id HAVING COUNT(Post.id) = 0")
+        res = db.engine.execute(statement)
+
+        response = []
+        for row in res:
+            response.append({"id": row[0], "name": row[1]})
+        return response
