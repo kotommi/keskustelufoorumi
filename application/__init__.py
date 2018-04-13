@@ -1,6 +1,5 @@
 import flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import engine
 
 app = flask.Flask(__name__)
 

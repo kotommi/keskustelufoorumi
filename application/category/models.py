@@ -10,6 +10,7 @@ class Category(Base):
 
     threads = db.relationship("Thread", backref="category", lazy=True)
 
+
     def __init__(self, title, description):
         """
         :type title: String
