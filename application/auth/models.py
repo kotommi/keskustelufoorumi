@@ -30,13 +30,14 @@ class User(Base):
         return True
 
     @staticmethod
-    def find_users_with_no_posts():
+    def find_usernames():
         statement = text(
-            "SELECT account.id , account.name FROM Account LEFT JOIN Post ON Post.account_id = account.id GROUP BY )")
+            "SELECT account.name, account.username FROM account")
         res = db.engine.execute(statement)
 
         response = []
         for row in res:
-            response.append({"id": row[0], "name": row[1]})
+            response.append({row[0]})
+            response.append({row[1]})
 
         return response

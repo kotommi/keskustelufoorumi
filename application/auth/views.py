@@ -27,7 +27,8 @@ def auth_create():
     if request.method == "GET":
         return render_template("auth/createform.html", form=CreateForm())
 
-    form = LoginForm(request.form)
+    form = CreateForm(request.form)
+    form.validate()
     # validointi
 
 
