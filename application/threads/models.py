@@ -1,14 +1,15 @@
-import application
+from application import db
+from application.models import Base
 
 
-class Thread(application.db.Model):
-    id = application.db.Column(application.db.Integer, primary_key=True)
-    date_created = application.db.Column(application.db.DateTime, default=application.db.func.current_timestamp())
-    date_modified = application.db.Column(application.db.DateTime, default=application.db.func.current_timestamp(),
-                                          onupdate=application.db.func.current_timestamp())
+class Thread(Base):
+    title = db.Column(db.String(144), nullable=False)
+    content = db.Column(db.String(1000), nullable=False)
 
-    title = application.db.Column(application.db.String(144), nullable=False)
-    content = application.db.Column(application.db.String(1000), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey("category.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
+
+    posts = db.relationship("Post", backref="Thread", lazy=True)
 
     def __init__(self, title, content):
         """

@@ -1,18 +1,14 @@
 from application import db
+from application.models import Base
 
 
-class Category(db.Model):
+class Category(Base):
     __tablename__ = "category"
-
-    id = db.Column(db.Integer, primary_key=True)
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
-                              onupdate=db.func.current_timestamp())
 
     title = db.Column(db.String(144), nullable=False)
     description = db.Column(db.String(255), nullable=False)
 
-    posts = db.relationship("Post", backref="account", lazy=True)
+    threads = db.relationship("Thread", backref="category", lazy=True)
 
     def __init__(self, title, description):
         """

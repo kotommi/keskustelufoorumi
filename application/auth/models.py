@@ -1,13 +1,10 @@
 from application import db
+from application.models import Base
+from sqlalchemy.sql import text
 
 
-class User(db.Model):
+class User(Base):
     __tablename__ = "account"
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_modified = db.Column(db.DateTime, default=db.func.current_timestamp())
 
     name = db.Column(db.String(144), nullable=False)
     username = db.Column(db.String(144), nullable=False)
@@ -31,3 +28,15 @@ class User(db.Model):
 
     def is_authenticated(self):
         return True
+
+    @staticmethod
+    def find_users_with_no_posts():
+        statement = text(
+            "SELECT account.id , account.name FROM Account LEFT JOIN Post ON Post.account_id = account.id GROUP BY )")
+        res = db.engine.execute(statement)
+
+        response = []
+        for row in res:
+            response.append({"id": row[0], "name": row[1]})
+
+        return response
