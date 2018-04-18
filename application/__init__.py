@@ -16,17 +16,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 from application.category import models
-from application.category import views
-
 from application.auth import models
-from application.auth import views
-
-from application import views
-from application.posts import views
 from application.posts import models
-
 from application.threads.models import Thread
-from application.threads import views
 from application.threads import models
 
 # login
@@ -36,6 +28,12 @@ from os import urandom
 app.config["SECRET_KEY"] = urandom(32)
 
 db.create_all()
+
+from application.auth import views
+from application.category import views
+from application.threads import views
+from application import views
+from application.posts import views
 
 from flask_login import LoginManager
 
