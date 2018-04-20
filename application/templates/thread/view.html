@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <p id="thread.title">
+        Title: {{ thread.title|striptags|title }}
+    </p>
+    <p id="thread.content">
+        Content: {{ thread.content|striptags|wordwrap }} {# what about images/links? #}
+    </p>
+
+    <p id="posts"> {# todo: add username #}
+        {% for post in posts %}
+            <p id="post.id.{{ post.id }}">
+                {{ post.name|striptags|title }}
+                {% if current_user.id == post.account_id %}
+                    <a href="{{ url_for("post_delete", post_id=post.id) }}">Delete</a>
+                {% endif %}
+            </p>
+            <p id="post.content.{{ post.id }}">
+                {{ post.content|striptags|wordwrap }}
+            </p>
+        {% endfor %}
+    </p>
+
+    <p>
+        <a href="{{ url_for("post_new", thread_id=thread.id) }}">Reply</a>
+    </p>
+{% endblock %}

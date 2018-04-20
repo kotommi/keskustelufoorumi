@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, validators
+from wtforms import StringField, TextAreaField, HiddenField, validators
 
 
 class PostForm(FlaskForm):

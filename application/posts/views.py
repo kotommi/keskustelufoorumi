@@ -10,10 +10,10 @@ def post_index():
     return render_template("post/list.html", posts=Post.query.all())
 
 
-@app.route("/post/new")
+@app.route("/post/new/<thread_id>")
 @login_required
-def post_form():
-    return render_template("post/new.html", form=PostForm())
+def post_new(thread_id):
+    return render_template("post/new.html", form=PostForm(), thread_id=thread_id)
 
 
 @app.route("/post/edit/<post_id>/", methods=["GET"])
@@ -23,26 +23,27 @@ def post_edit(post_id):
     return render_template("post/edit.html", post=p)
 
 
-@app.route("/post/edit/<post_id>/", methods=["POST"])
+@app.route("/post/delete/<post_id>", methods=["GET"])
 @login_required
-def post_update(post_id):
-    p = Post.query.get(post_id)
-    p.name = request.form.get("name")
-    p.content = request.form.get("content")
-    db.session().add(p)
+def post_delete(post_id):
+    post = Post.query.get(post_id)
+    if post.account_id != current_user.id:
+        return "Authentication error"
+    db.session().delete(post)
     db.session().commit()
-    return redirect(url_for("post_index"))
+    return redirect(url_for("thread_view", thread_id=post.thread_id))
 
 
-@app.route("/post/", methods=["POST"])
+@app.route("/post/<thread_id>", methods=["POST"])
 @login_required
-def post_create():
+def post_create(thread_id):
     form = PostForm(request.form)
 
     if not form.validate():
-        return render_template("post/new.html", form=form)
+        return render_template("post/new.html", form=form, thread_id=thread_id)
     p = Post(form.name.data, form.content.data)
     p.account_id = current_user.id
+    p.thread_id = thread_id
     db.session().add(p)
     db.session().commit()
-    return redirect(url_for("post_index"))
+    return redirect(url_for("thread_view", thread_id=thread_id))

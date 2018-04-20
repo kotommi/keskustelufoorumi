@@ -11,7 +11,8 @@ user_role = db.Table('user_role', Base.metadata,
 class Role(Base):
     __tablename__ = "role"
 
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False, unique=True)
+    description = db.Column(db.String(255))
     users = db.relationship("User", secondary=user_role, backref="Role")
 
 

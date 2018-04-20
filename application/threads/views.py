@@ -13,9 +13,18 @@ def thread_new(cat_id):
     form = ThreadForm(request.form)
 
     if not form.validate():
-        return render_template("thread/new_thread.html", form=form)
+        return render_template("thread/new_thread.html", cat_id=cat_id, form=form)
 
-    thread = Thread(title=form.title.data, content=form.content.data, category_id=form.cat_id.data,
+    thread = Thread(title=form.title.data, content=form.content.data, category_id=cat_id,
                     user_id=current_user.id)
+    db.session().add(thread)
+    db.session().commit()
+    return redirect(url_for("category_list", category_id=cat_id))
 
 
+@app.route("/thread/<thread_id>/", methods=["GET"])
+def thread_view(thread_id):
+    thread = Thread.query.get(thread_id)
+    posts = thread.posts
+
+    return render_template("thread/view.html", thread=thread, posts=posts)

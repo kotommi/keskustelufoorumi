@@ -11,10 +11,12 @@ class Thread(Base):
 
     posts = db.relationship("Post", backref="Thread", lazy=True)
 
-    def __init__(self, title, content):
+    def __init__(self, title, content, category_id, user_id):
         """
         :type title: String
         :type content: String
         """
         self.title = title
         self.content = content
+        self.category_id = category_id
+        self.user_id = user_id
