@@ -1,7 +1,18 @@
 from application import db
 from application.models import Base
-from application.role.models import user_role
 from sqlalchemy.sql import text
+
+user_role = db.Table('user_role', Base.metadata,
+                     db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
+                     db.Column('user_id', db.Integer, db.ForeignKey('account.id'))
+                     )
+
+
+class Role(Base):
+    __tablename__ = "role"
+
+    name = db.Column(db.String(50), nullable=False)
+    users = db.relationship("User", secondary=user_role, backref="Role")
 
 
 class User(Base):
