@@ -26,11 +26,10 @@ class User(Base):
 
     roles = db.relationship("Role", secondary=user_role, backref="User")
 
-    def __init__(self, name, username, password, roles):
+    def __init__(self, name, username, password):
         self.name = name
         self.username = username
         self.password = password
-        self.roles = roles
 
     def get_id(self):
         return self.id

@@ -17,7 +17,6 @@ db = SQLAlchemy(app)
 
 from application.category import models
 from application.auth import models
-from application.role import models
 from application.posts import models
 from application.threads.models import Thread
 from application.threads import models

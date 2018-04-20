@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user
 
 from application import app, db
-from application.auth.models import User
+from application.auth.models import User, Role, user_role
 from application.auth.forms import LoginForm, CreateForm
 
 
@@ -23,6 +23,10 @@ def auth_login():
 
 @app.route("/auth/create", methods=["GET", "POST"])
 def auth_create():
+    """
+
+    Users are created with the Normal role only
+    """
     if request.method == "GET":
         return render_template("auth/createform.html", form=CreateForm())
 
@@ -31,8 +35,9 @@ def auth_create():
     if not form.validate():
         return render_template("auth/createform.html", form=form)
 
-    user = User(form.username.data, form.username.data, form.password.data, roles=["Normal"])
+    user = User(form.username.data, form.username.data, form.password.data)
     db.session().add(user)
+    db.session().execute(user_role.insert().values([(Role.query.filter_by(name="Normal").first().id, user.id)]))
     db.session().commit()
     flash("Registration complete!")
     return redirect(url_for("auth_login"))
