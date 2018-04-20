@@ -37,7 +37,7 @@ def auth_create():
 
     user = User(form.username.data, form.username.data, form.password.data)
     db.session().add(user)
-    db.session().execute(user_role.insert().values([(Role.query.filter_by(name="Normal").first().id, user.id)]))
+    db.session().execute(user_role.insert().values([(Role.query.filter_by(name="normal").first().id, user.id)]))
     db.session().commit()
     flash("Registration complete!")
     return redirect(url_for("auth_login"))

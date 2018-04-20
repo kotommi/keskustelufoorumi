@@ -1,9 +1,23 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <form method="POST" action="{{ url_for('post_update', post_id = post.id) }}">
-        <p>Title</p><input type="text" name="name" value="{{ post.name }}"/><br/>
-        <p>Content</p><input type="text" name="content" value="{{ post.content }}"/><br/>
-        <input type="submit" value="Edit post"/>
+    <form method="POST" action="{{ url_for('post_edit', post_id = post.id) }}">
+        {{ form.name.label }}
+        {{ form.name }}
+        <ul>
+            {% for error in form.name.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        <br/>
+        <br/>
+        {{ form.content.label }}
+        {{ form.content }}
+        <ul>
+            {% for error in form.content.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        <input type="submit" value="Edit"/>
     </form>
 {% endblock %}

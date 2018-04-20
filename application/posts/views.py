@@ -16,11 +16,25 @@ def post_new(thread_id):
     return render_template("post/new.html", form=PostForm(), thread_id=thread_id)
 
 
-@app.route("/post/edit/<post_id>/", methods=["GET"])
+@app.route("/post/edit/<post_id>/", methods=["GET", "POST"])
 @login_required
 def post_edit(post_id):
-    p = Post.query.get(post_id)
-    return render_template("post/edit.html", post=p)
+    post = Post.query.get(post_id)
+    if request.method == "POST":
+        form = PostForm(request.form)
+        if form.validate() and current_user.id == post.account_id:
+            post.name = form.name.data
+            post.content = form.name.data
+            Post.query.filter(Post.id == post.id).update({'name': form.name.data, 'content': form.content.data})
+            db.session().commit()
+            return redirect(url_for("thread_view", thread_id=post.thread_id))
+        else:
+            return render_template("post/edit.html", form=form, post=post)
+
+    form = PostForm()
+    form.name.data = post.name
+    form.content.data = post.content
+    return render_template("post/edit.html", form=form, post=post)
 
 
 @app.route("/post/delete/<post_id>", methods=["GET"])
