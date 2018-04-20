@@ -1,5 +1,6 @@
 from application import db
 from application.models import Base
+from application.role.models import user_role
 from sqlalchemy.sql import text
 
 
@@ -12,10 +13,13 @@ class User(Base):
 
     posts = db.relationship("Post", backref="account", lazy=True)
 
-    def __init__(self, name, username, password):
+    roles = db.relationship("Role", secondary=user_role, backref="User")
+
+    def __init__(self, name, username, password, roles):
         self.name = name
         self.username = username
         self.password = password
+        self.roles = roles
 
     def get_id(self):
         return self.id
