@@ -1,6 +1,8 @@
 import flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_security import Security, SQLAlchemyUserDatastore
 
+# App configs
 app = flask.Flask(__name__)
 
 import os
@@ -12,25 +14,34 @@ else:
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///posts.db"
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config[
+    "SECURITY_PASSWORD_SALT"] = "super secret salt"  # this is just for the hmac, not actual passwords
+app.config["SECURITY_PASSWORD_HASH"] = "bcrypt"
+
+from os import urandom
+
+app.config["SECRET_KEY"] = urandom(32)
 
 db = SQLAlchemy(app)
 
+# Models
 from application.category import models
 from application.auth import models
 from application.posts import models
 from application.threads.models import Thread
 from application.threads import models
-from application.auth.models import User
+from application.auth.models import User, Role
 
-# create tables if not present
+# Create tables if not present
 db.create_all()
 
+# Flask-Security
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
+
 # login
-from os import urandom
 
-app.config["SECRET_KEY"] = urandom(32)
-
-from flask_login import LoginManager, current_user
+from flask_security.core import LoginManager, current_user
 
 login_manager = LoginManager()
 login_manager.init_app(app)

@@ -1,6 +1,7 @@
 from application import db
 from application.models import Base
 from sqlalchemy.sql import text
+from flask_security import UserMixin, RoleMixin
 
 user_role = db.Table('user_role', Base.metadata,
                      db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
@@ -8,7 +9,7 @@ user_role = db.Table('user_role', Base.metadata,
                      )
 
 
-class Role(Base):
+class Role(Base, UserMixin):
     __tablename__ = "role"
 
     name = db.Column(db.String(50), nullable=False, unique=True)
@@ -16,12 +17,13 @@ class Role(Base):
     users = db.relationship("User", secondary=user_role, backref="Role")
 
 
-class User(Base):
+class User(Base, RoleMixin):
     __tablename__ = "account"
 
     name = db.Column(db.String(144), nullable=False)
     username = db.Column(db.String(144), nullable=False)
     password = db.Column(db.String(144), nullable=False)
+    active = db.Column(db.Boolean())
 
     posts = db.relationship("Post", backref="account", lazy=True)
 
@@ -36,6 +38,8 @@ class User(Base):
         return self.id
 
     def is_active(self):
+        if self.active == False:
+            return False
         return True
 
     def is_anonymous(self):
@@ -43,9 +47,6 @@ class User(Base):
 
     def is_authenticated(self):
         return True
-
-    def roles(self):
-        return ["ADMIN"]
 
     @staticmethod
     def find_usernames():
