@@ -2,8 +2,6 @@
 
 {% block body %}
     <form method="POST" action="{{ url_for('post_create', thread_id=thread_id) }}">
-        {{ form.name.label }}
-        {{ form.name }}
         <ul>
             {% for error in form.name.errors %}
                 <li>{{ error }}</li>
