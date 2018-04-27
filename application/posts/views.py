@@ -23,16 +23,14 @@ def post_edit(post_id):
     if request.method == "POST":
         form = PostForm(request.form)
         if form.validate() and current_user.id == post.account_id:
-            post.name = form.name.data
-            post.content = form.name.data
-            Post.query.filter(Post.id == post.id).update({'name': form.name.data, 'content': form.content.data})
+            post.content = form.content.data
+            Post.query.filter(Post.id == post.id).update({'name': 'reply', 'content': form.content.data})
             db.session().commit()
             return redirect(url_for("thread_view", thread_id=post.thread_id))
         else:
             return render_template("post/edit.html", form=form, post=post)
 
     form = PostForm()
-    form.name.data = post.name
     form.content.data = post.content
     return render_template("post/edit.html", form=form, post=post)
 
@@ -55,7 +53,7 @@ def post_create(thread_id):
 
     if not form.validate():
         return render_template("post/new.html", form=form, thread_id=thread_id)
-    p = Post(form.name.data, form.content.data)
+    p = Post(form.content.data)
     p.account_id = current_user.id
     p.thread_id = thread_id
     db.session().add(p)

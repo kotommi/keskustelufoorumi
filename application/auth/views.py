@@ -33,8 +33,9 @@ def auth_create():
 
     existing_user = User.query.filter_by(username=form.username.data).first()
 
-    if not form.validate() or existing_user is not None:
-        form.username.errors.append("Username already exists!")
+    if not form.validate() or existing_user:
+        if existing_user:
+            form.username.errors.append("Username already exists!")
         return render_template("auth/createform.html", form=form)
 
     hashed_pw = hash_password(form.password.data)

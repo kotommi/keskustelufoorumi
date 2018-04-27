@@ -1,4 +1,4 @@
-from application import app, db
+from application import app, db, user_datastore
 from flask import redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 from application.threads.forms import ThreadForm
@@ -27,4 +27,4 @@ def thread_view(thread_id):
     thread = Thread.query.get(thread_id)
     posts = thread.posts
 
-    return render_template("thread/view.html", thread=thread, posts=posts)
+    return render_template("thread/view.html", thread=thread, posts=posts, user_datastore=user_datastore)

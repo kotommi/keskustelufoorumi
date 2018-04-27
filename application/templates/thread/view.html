@@ -11,10 +11,12 @@
     <p id="posts"> {# todo: add username #}
         {% for post in posts %}
             <p id="post.id.{{ post.id }}">
-                {{ post.name|striptags|title }}
-                {% if current_user.id == post.account_id %}
-                    <a href="{{ url_for("post_edit", post_id=post.id) }}">Edit</a>
-                    <a href="{{ url_for("post_delete", post_id=post.id) }}">Delete</a>
+                {{ user_datastore.find_user(id=post.account_id).username }}:
+                {% if not current_user.is_anonymous %}
+                    {% if current_user.id == post.account_id or current_user.has_role('admin') %}
+                        <a href="{{ url_for("post_edit", post_id=post.id) }}">Edit</a>
+                        <a href="{{ url_for("post_delete", post_id=post.id) }}">Delete</a>
+                    {% endif %}
                 {% endif %}
             </p>
             <p id="post.content.{{ post.id }}">

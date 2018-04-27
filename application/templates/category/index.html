@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 
 {% block body %}
+    {% if current_user.has_role("admin") %}
+        <a href="{{ url_for("category_create") }}">Create new category</a>
+    {% endif %}
     <ul>
         {% for category in categories %}
             <li>
@@ -8,4 +11,5 @@
             </li>
         {% endfor %}
     </ul>
+
 {% endblock %}

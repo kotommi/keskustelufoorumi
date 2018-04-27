@@ -1,11 +1,15 @@
 {% extends "layout.html" %}
 
+{% block title %}
+    {{ category.title }}
+{% endblock %}
+
 {% block body %}
     <a href="{{ url_for("thread_new", cat_id=category_id) }}">Create a new thread</a>
     <ul>
         {% for thread in threads %}
             <li><a href="{{ url_for("thread_view", thread_id=thread.id) }}">{{ thread.title }}</a>
-                by {{ thread.user_id }}</li>
+                by {{ user_datastore.find_user(id=thread.user_id).username }}</li>
         {% endfor %}
     </ul>
 {% endblock %}

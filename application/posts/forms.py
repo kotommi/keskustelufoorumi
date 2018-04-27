@@ -3,7 +3,6 @@ from wtforms import StringField, TextAreaField, HiddenField, validators
 
 
 class PostForm(FlaskForm):
-    name = StringField("Title", [validators.Length(min=2)])
     content = TextAreaField("Content", [validators.Length(min=2)])
 
     class Meta:

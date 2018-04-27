@@ -9,6 +9,6 @@ class Post(Base):
     account_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
     thread_id = db.Column(db.Integer, db.ForeignKey("thread.id"), nullable=False)
 
-    def __init__(self, name, content):
+    def __init__(self, content, name="reply"):
         self.name = name
         self.content = content
