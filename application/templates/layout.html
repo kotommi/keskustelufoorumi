@@ -23,7 +23,12 @@
         </ul>
         <div class="form-inline mt-2 mt-md-0">
             {% if current_user.is_authenticated %}
+                {% if current_user.has_role('admin') %}
+                    <a href="{{ url_for('admin_panel') }}">Admin panel</a>
+                    <div></div>
+                {% endif %}
                 <span>Logged in as {{ current_user.name }}</span>
+                <a href="{{ url_for('user_panel', user_id=current_user.id) }}">Profile</a>
                 <a href="{{ url_for('auth_logout') }}">Sign out</a>
             {% else %}
                 <a href="{{ url_for('auth_login') }}">Login</a><span>|</span>
@@ -32,6 +37,16 @@
         </div>
     </div>
 </nav>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
 
 <main role="main" class="container">
 

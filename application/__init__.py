@@ -1,6 +1,7 @@
 import flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore
+from flask_security.utils import hash_password
 
 # App configs
 app = flask.Flask(__name__)
@@ -49,40 +50,22 @@ login_manager.init_app(app)
 login_manager.login_view = "auth_login"
 login_manager.login_message = "Please login to use this functionality."
 
-# decorator for roles in login_required
-from functools import wraps
-
-
-def login_required(role="ANY"):
-    def wrapper(fn):
-        @wraps(fn)
-        def decorated_view(*args, **kwargs):
-            if not current_user.is_authenticated():
-                return login_manager.unauthorized()
-
-            unauthorized = False
-
-            if role != "ANY":
-                unauthorized = True
-
-                for user_role in current_user.roles():
-                    if user_role == role:
-                        unauthorized = False
-                        break
-
-            if unauthorized:
-                return login_manager.unauthorized()
-
-            return fn(*args, **kwargs)
-
-        return decorated_view
-
-    return wrapper
-
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+# Create a user to test with
+@app.before_first_request
+def create_user():
+    db.create_all()
+    if (User.query.filter_by(username="testadmin")).first() is None:
+        admin = user_datastore.create_user(name="testadmin", username="testadmin", password=hash_password("asdasdasd"))
+        db.session.commit()
+        user_datastore.add_role_to_user(admin, user_datastore.find_or_create_role("admin"))
+        user_datastore.activate_user(admin)
+        user_datastore.commit()
 
 
 # load views
@@ -91,3 +74,4 @@ from application.category import views
 from application.threads import views
 from application import views
 from application.posts import views
+from application.control import views

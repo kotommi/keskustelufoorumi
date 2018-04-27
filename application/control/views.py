@@ -15,6 +15,10 @@ def admin_panel():
 @app.route("/user/<user_id>", methods=["GET"])
 @login_required
 def user_panel(user_id):
-    if current_user.id != user_id:
-        return redirect(url_for("index"))
+    try:
+        user_id = int(user_id)
+    except ValueError:
+        return redirect(url_for("category_index"))
+    if not current_user.id == user_id:
+        return redirect(url_for("category_index"))
     return render_template("control/user.html", user=user_datastore.get_user(user_id))

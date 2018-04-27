@@ -9,7 +9,7 @@ user_role = db.Table('user_role', Base.metadata,
                      )
 
 
-class Role(Base, UserMixin):
+class Role(Base, RoleMixin):
     __tablename__ = "role"
 
     name = db.Column(db.String(50), nullable=False, unique=True)
@@ -17,7 +17,7 @@ class Role(Base, UserMixin):
     users = db.relationship("User", secondary=user_role, backref="Role")
 
 
-class User(Base, RoleMixin):
+class User(Base, UserMixin):
     __tablename__ = "account"
 
     name = db.Column(db.String(144), nullable=False, unique=True)
@@ -29,10 +29,12 @@ class User(Base, RoleMixin):
 
     roles = db.relationship("Role", secondary=user_role, backref="User")
 
-    def __init__(self, name, username, password):
+    def __init__(self, name, username, password, active=False, roles=[]):
         self.name = name
         self.username = username
         self.password = password
+        self.active = active
+        self.roles = roles
 
     def get_id(self):
         return self.id

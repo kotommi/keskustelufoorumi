@@ -16,7 +16,6 @@ def auth_login():
     password = form.password.data
     if not user or not verify_and_update_password(password, user):
         return render_template("auth/loginform.html", form=form, error="No such username or password")
-
     login_user(user)
     return redirect(url_for("category_index"))
 
