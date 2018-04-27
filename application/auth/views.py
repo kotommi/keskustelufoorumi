@@ -32,16 +32,20 @@ def auth_create():
 
     form = CreateForm(request.form)
 
-    if not form.validate():
+    existing_user = User.query.filter_by(username=form.username.data).first()
+
+    if not form.validate() or existing_user is not None:
+        form.username.errors.append("Username already exists!")
         return render_template("auth/createform.html", form=form)
 
     hashed_pw = hash_password(form.password.data)
     new_user = User(form.username.data, form.username.data, hashed_pw)
     db.session().add(new_user)
-    db.commit()
-    default_role = Role.query.filter_by(name="normal").first()
+    db.session().commit()
+    default_role = user_datastore.find_or_create_role("normal")
     user_datastore.add_role_to_user(new_user, role=default_role)
     user_datastore.activate_user(new_user)
+    user_datastore.commit()
     flash("Registration complete!")
     return redirect(url_for("auth_login"))
 

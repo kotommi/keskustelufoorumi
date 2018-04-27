@@ -20,8 +20,8 @@ class Role(Base, UserMixin):
 class User(Base, RoleMixin):
     __tablename__ = "account"
 
-    name = db.Column(db.String(144), nullable=False)
-    username = db.Column(db.String(144), nullable=False)
+    name = db.Column(db.String(144), nullable=False, unique=True)
+    username = db.Column(db.String(144), nullable=False, unique=True)
     password = db.Column(db.String(144), nullable=False)
     active = db.Column(db.Boolean())
 
@@ -38,9 +38,9 @@ class User(Base, RoleMixin):
         return self.id
 
     def is_active(self):
-        if self.active == False:
+        if self.active is None:
             return False
-        return True
+        return self.active
 
     def is_anonymous(self):
         return False
