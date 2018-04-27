@@ -43,6 +43,7 @@ def auth_create():
     db.session().add(new_user)
     db.session().commit()
     default_role = user_datastore.find_or_create_role("normal")
+    # Add roles here if needed
     user_datastore.add_role_to_user(new_user, role=default_role)
     user_datastore.activate_user(new_user)
     user_datastore.commit()
