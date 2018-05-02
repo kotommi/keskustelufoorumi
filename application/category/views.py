@@ -1,4 +1,4 @@
-from application import user_datastore, app, Role
+from application import user_datastore, app, db
 from flask import redirect, render_template, request, url_for, flash
 from flask_security import roles_required
 from application.category.models import Category
@@ -17,7 +17,13 @@ def category_create():
         return render_template("category/create.html", form=CategoryForm())
 
     form = CategoryForm(request.form)
+    if not form.validate():
+        flash("There were errors")
+        return render_template("category/create.html", form=form, errors=form.errors)
+
     new_category = Category(form.title.data, form.description.data)
+    db.session().add(new_category)
+    db.session().commit()
 
     flash("Category created")
     return redirect(url_for("category_index"))

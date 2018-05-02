@@ -1,5 +1,5 @@
 from application import app, db
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, flash
 from flask_login import login_required, current_user
 from application.posts.models import Post
 from application.posts.forms import PostForm
@@ -26,6 +26,7 @@ def post_edit(post_id):
             post.content = form.content.data
             Post.query.filter(Post.id == post.id).update({'name': 'reply', 'content': form.content.data})
             db.session().commit()
+            flash("Post successful!")
             return redirect(url_for("thread_view", thread_id=post.thread_id))
         else:
             return render_template("post/edit.html", form=form, post=post)
@@ -39,20 +40,24 @@ def post_edit(post_id):
 @login_required
 def post_delete(post_id):
     post = Post.query.get(post_id)
-    if post.account_id != current_user.id:
-        return "Authentication error"
+    if post.account_id != current_user.id or not current_user.has_role("admin"):
+        flash("Authentication error")
+        return redirect(url_for("category_index"))
     db.session().delete(post)
     db.session().commit()
     return redirect(url_for("thread_view", thread_id=post.thread_id))
 
 
-@app.route("/post/<thread_id>", methods=["GET", "POST"])
+@app.route("/post/<thread_id>", methods=["POST"])
 @login_required
 def post_create(thread_id):
     form = PostForm(request.form)
 
     if not form.validate():
         return render_template("post/new.html", form=form, thread_id=thread_id)
+    if not current_user.is_authenticated:
+        flash("Authentication error")
+        return redirect(url_for("category_index"))
     p = Post(form.content.data)
     p.account_id = current_user.id
     p.thread_id = thread_id

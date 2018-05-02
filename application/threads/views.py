@@ -19,6 +19,7 @@ def thread_new(cat_id):
                     user_id=current_user.id)
     db.session().add(thread)
     db.session().commit()
+    flash("Thread created")
     return redirect(url_for("category_list", category_id=cat_id))
 
 

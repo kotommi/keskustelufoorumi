@@ -2,7 +2,6 @@ from application import db
 from application.models import Base
 from sqlalchemy.sql import text
 from flask_security import UserMixin, RoleMixin
-from application.category.models import category_role
 
 user_role = db.Table('user_role', Base.metadata,
                      db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
@@ -16,15 +15,6 @@ class Role(Base, RoleMixin):
     name = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.String(255))
     users = db.relationship("User", secondary=user_role, backref="Role")
-    categories = db.relationship("Category", secondary=category_role, backref="Role")
-
-    @staticmethod
-    def find_rolenames():
-        roles = Role.queryAll()
-        names = []
-        for role in roles:
-            names.append(role.name)
-        return names
 
 
 class User(Base, UserMixin):
@@ -35,7 +25,7 @@ class User(Base, UserMixin):
     password = db.Column(db.String(144), nullable=False)
     active = db.Column(db.Boolean())
 
-    posts = db.relationship("Post", backref="account", lazy=True)
+    posts = db.relationship("Post", backref="account", lazy=True, cascade="all, delete-orphan")
 
     roles = db.relationship("Role", secondary=user_role, backref="User")
 
