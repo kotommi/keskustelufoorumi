@@ -19,7 +19,7 @@ def category_create():
     form = CategoryForm(request.form)
     if not form.validate():
         flash("There were errors")
-        return render_template("category/create.html", form=form, errors=form.errors)
+        return render_template("category/create.html", form=form)
 
     new_category = Category(form.title.data, form.description.data)
     db.session().add(new_category)

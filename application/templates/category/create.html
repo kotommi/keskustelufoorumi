@@ -1,22 +1,24 @@
 {% extends "layout.html" %}
+{% from "macros.html" import  with_errors %}
 
 {% block title %}
     Create a category
 {% endblock %}
 
 {% block body %}
+    {{ error }}
     <form method="POST" action="{{ url_for("category_create") }}">
         <table>
             <tr>
                 <td>{{ form.title.label }}</td>
                 <td>
-                    {{ with_errors(form.title) }}
+                    {{ with_errors(form.title, style='font-weight: bold') }}
                 </td>
             </tr>
             <tr>
                 <td>{{ form.description.label }}</td>
                 <td>
-                    {{ with_errors(form.description) }}
+                    {{ with_errors(form.description, style='font-weight: bold') }}
                 </td>
             </tr>
             <tr>

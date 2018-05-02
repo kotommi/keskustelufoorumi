@@ -10,13 +10,11 @@ class Category(Base):
 
     threads = db.relationship("Thread", backref="category", lazy=True, cascade="all, delete-orphan")
 
-    def __init__(self, title, description, roles=None):
+    def __init__(self, title, description):
         """
         :type title: String
         :type description: String
         """
-        if roles is None:
-            roles = ["normal"]
+
         self.title = title
         self.description = description
-        self.roles = roles.copy()
