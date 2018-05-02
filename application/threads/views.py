@@ -22,7 +22,7 @@ def thread_new(cat_id):
     return redirect(url_for("category_list", category_id=cat_id))
 
 
-@app.route("/thread/delete/<thread_id>", methods=["POST"])
+@app.route("/thread/delete/<thread_id>", methods=["GET"])
 @login_required
 def thread_delete(thread_id):
     thread = Thread.query.get(thread_id)
@@ -31,8 +31,9 @@ def thread_delete(thread_id):
         return redirect(url_for("category_index"))
     return_id = thread.category_id
     db.session().delete(thread)
+    db.session().commit()
     flash("Delete successful")
-    return redirect(url_for("category_list"), return_id)
+    return redirect(url_for("category_list", category_id=return_id))
 
 
 @app.route("/thread/<thread_id>/", methods=["GET"])

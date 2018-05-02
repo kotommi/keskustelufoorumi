@@ -7,6 +7,14 @@
 {% block body %}
     <p id="thread.title">
         Title: {{ thread.title|striptags|title }}
+        {% if current_user.is_authenticated and (current_user.id == thread.user_id or current_user.has_role("admin")) %}
+            <a href="{{ url_for("thread_delete", thread_id=thread.id) }}">Delete</a>
+        {% endif %}
+        </br>
+        By: {{ user_datastore.find_user(id=thread.user_id).username }} Date: {{ thread.date_created }}
+        {% if not thread.date_created == thread.date_modified %}
+            Edited: {{ thread.date_modified }}
+        {% endif %}
     </p>
     <p id="thread.content">
         Content: {{ thread.content|striptags|wordwrap }} {# what about images/links? #}

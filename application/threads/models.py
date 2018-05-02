@@ -9,7 +9,7 @@ class Thread(Base):
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 
-    posts = db.relationship("Post", backref="Thread", lazy=True)
+    posts = db.relationship("Post", backref="Thread", lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, title, content, category_id, user_id):
         """

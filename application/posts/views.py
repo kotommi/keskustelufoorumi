@@ -46,7 +46,7 @@ def post_delete(post_id):
     return redirect(url_for("thread_view", thread_id=post.thread_id))
 
 
-@app.route("/post/<thread_id>", methods=["POST"])
+@app.route("/post/<thread_id>", methods=["GET", "POST"])
 @login_required
 def post_create(thread_id):
     form = PostForm(request.form)
