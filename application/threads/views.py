@@ -27,13 +27,11 @@ def thread_new(cat_id):
 @login_required
 def thread_delete(thread_id):
     thread = Thread.query.get(thread_id)
-    if not thread or current_user.id != thread.user_id or not current_user.has_role("admin"):
-        flash("Missing thread or permission")
-        print(thread)
-        print(thread_id)
-        print(current_user.has_role("admin"))
-        print(current_user.id)
-        print(thread.user_id)
+    if not thread:
+        flash("Missing thread")
+        return redirect(url_for("category_index"))
+    if current_user.id != thread.user_id and not current_user.has_role("admin"):
+        flash("Authentication error")
         return redirect(url_for("category_index"))
     return_id = thread.category_id
     db.session().delete(thread)
