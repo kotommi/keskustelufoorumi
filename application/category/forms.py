@@ -7,4 +7,3 @@ class CategoryForm(FlaskForm):
     title = StringField("Title")
     description = TextAreaField("Description")
     roles = SelectField("Allowed roles")
-    roles.choices = [(r.id, r.name) for r in Role.query.order_by('name')]

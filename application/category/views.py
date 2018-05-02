@@ -1,5 +1,6 @@
-from application import user_datastore, app
+from application import user_datastore, app, Role
 from flask import redirect, render_template, request, url_for, flash
+from flask_security import roles_required
 from application.category.models import Category
 from application.category.forms import CategoryForm
 
@@ -10,6 +11,7 @@ def category_index():
 
 
 @app.route("/category/create", methods=["GET", "POST"])
+@roles_required("admin")
 def category_create():
     if request.method == "GET":
         return render_template("category/create.html", form=CategoryForm())

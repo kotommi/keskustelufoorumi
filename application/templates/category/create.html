@@ -5,28 +5,25 @@
 {% endblock %}
 
 {% block body %}
-    <table>
-        <tr>
-            <td>{{ form.title.label }}</td>
-            <td>{{ form.title.data }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.description.label }}</td>
-            <td>{{ form.description.data }}</td>
-        </tr>
-        <tr>
-            {% if form.roles.choices %}
-                {% for tuple in form.roles.choices %}
-                    <td>form.roles.label</td>
-                    <td>form.roles</td>
-                {% endfor %}
-            {% endif %}
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Create"/>
-            </td>
-        </tr>
-
-    </table>
+    <form method="POST" action="{{ url_for("category_create") }}">
+        <table>
+            <tr>
+                <td>{{ form.title.label }}</td>
+                <td>
+                    {{ with_errors(form.title) }}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ form.description.label }}</td>
+                <td>
+                    {{ with_errors(form.description) }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Submit"/>
+                </td>
+            </tr>
+        </table>
+    </form>
 {% endblock %}
