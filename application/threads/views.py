@@ -1,5 +1,5 @@
 from application import app, db, user_datastore
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, flash
 from flask_login import login_required, current_user
 from application.threads.forms import ThreadForm
 from application.threads.models import Thread
@@ -20,6 +20,19 @@ def thread_new(cat_id):
     db.session().add(thread)
     db.session().commit()
     return redirect(url_for("category_list", category_id=cat_id))
+
+
+@app.route("/thread/delete/<thread_id>", methods=["POST"])
+@login_required
+def thread_delete(thread_id):
+    thread = Thread.query.get(thread_id)
+    if not thread or (current_user.id != thread.user_id or not current_user.has_role("admin")):
+        flash("Missing thread or permission")
+        return redirect(url_for("category_index"))
+    return_id = thread.category_id
+    db.session().delete(thread)
+    flash("Delete successful")
+    return redirect(url_for("category_list"), return_id)
 
 
 @app.route("/thread/<thread_id>/", methods=["GET"])
