@@ -6,7 +6,7 @@
 
 {% block body %}
     <p id="thread.title">
-        Title: {{ thread.title|striptags|title }}
+        Title: {{ thread.title|trim|title }}
         {% if current_user.is_authenticated and (current_user.id == thread.user_id or current_user.has_role("admin")) %}
             <a href="{{ url_for("thread_delete", thread_id=thread.id) }}">Delete</a>
         {% endif %}
@@ -17,7 +17,7 @@
         {% endif %}
     </p>
     <p id="thread.content">
-        Content: {{ thread.content|striptags|wordwrap }} {# what about images/links? #}
+        Content: {{ thread.content|trim|wordwrap }} {# what about images/links? #}
     </p>
 
     <p id="posts"> {# todo: add username #}
@@ -32,7 +32,7 @@
                 {% endif %}
             </p>
             <p id="post.content.{{ post.id }}">
-                {{ post.content|striptags|wordwrap }}
+                {{ post.content|trim|wordwrap }}
             </p>
         {% endfor %}
     </p>
