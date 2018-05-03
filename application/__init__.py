@@ -42,7 +42,7 @@ security = Security(app, user_datastore)
 
 # login
 
-from flask_security.core import LoginManager, current_user
+from flask_security.core import LoginManager
 
 login_manager = LoginManager()
 login_manager.init_app(app)
