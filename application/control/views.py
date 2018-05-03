@@ -51,7 +51,7 @@ def user_panel(user_id):
     except ValueError:
         flash("No such user")
         return redirect(url_for("category_index"))
-    if not current_user.id == user_id or not current_user.has_role("admin"):
+    if not current_user.id == user_id and not current_user.has_role("admin"):
         flash("Authentication error")
         return redirect(url_for("category_index"))
     return render_template("control/user.html", user=user_datastore.get_user(user_id),

@@ -31,7 +31,7 @@ class Post(Base):
     @staticmethod
     def find_latest_posts(user_id, i=5):
         statement = text(
-            "SELECT * from post where post.account_id = :user_id ORDER BY date_modified DESC LIMIT :many"
+            "SELECT * FROM post WHERE post.account_id = :user_id ORDER BY date_modified DESC LIMIT :many"
         ).params(user_id=user_id, many=i)
         res = db.engine.execute(statement)
         response = []
