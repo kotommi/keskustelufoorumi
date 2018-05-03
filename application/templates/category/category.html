@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+    <h3>{{ category.title }}</h3>
     <a href="{{ url_for("thread_new", cat_id=category_id) }}">Create a new thread</a>
     <ul>
         {% for thread in threads %}
