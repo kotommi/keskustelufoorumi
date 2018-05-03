@@ -1,5 +1,7 @@
 from application import db
 from application.models import Base
+from application.auth.models import User
+from sqlalchemy import text
 
 
 class Post(Base):
@@ -12,3 +14,16 @@ class Post(Base):
     def __init__(self, content, name="reply"):
         self.name = name
         self.content = content
+
+    @staticmethod
+    def find_recent(i=5):
+        statement = text(
+            "SELECT * FROM post ORDER BY date_modified DESC LIMIT :many").params(many=i)
+        res = db.engine.execute(statement)
+
+        response = []
+        for row in res:
+            post = Post((row[4]))
+            post.thread_id = row[6]
+            response.append(post)
+        return response

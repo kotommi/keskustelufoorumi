@@ -1,5 +1,6 @@
 from application import db
 from application.models import Base
+from sqlalchemy import text
 
 
 class Thread(Base):
@@ -20,3 +21,16 @@ class Thread(Base):
         self.content = content
         self.category_id = category_id
         self.user_id = user_id
+
+    @staticmethod
+    def find_recent(i=5):
+        statement = text(
+            "SELECT * FROM thread ORDER BY date_modified DESC LIMIT :many").params(many=i)
+        res = db.engine.execute(statement)
+
+        response = []
+        for row in res:
+            thread = Thread(title=row[3], content=row[4], category_id=row[5], user_id=row[6])
+            thread.id = row[0]
+            response.append(thread)
+        return response
