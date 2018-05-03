@@ -4,6 +4,8 @@ from flask_security.decorators import roles_required, login_required, current_us
 from application import app, user_datastore
 from application.auth.models import User
 from application.category.models import Category
+from application.posts.models import Post
+from application.threads.models import Thread
 from application.control.forms import AdminForm
 
 
@@ -52,4 +54,5 @@ def user_panel(user_id):
     if not current_user.id == user_id or not current_user.has_role("admin"):
         flash("Authentication error")
         return redirect(url_for("category_index"))
-    return render_template("control/user.html", user=user_datastore.get_user(user_id))
+    return render_template("control/user.html", user=user_datastore.get_user(user_id),
+                           recent_posts=Post.find_latest_posts(user_id), recent_threads=Thread.find_latest_threads(user_id))

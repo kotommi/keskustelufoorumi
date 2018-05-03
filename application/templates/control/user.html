@@ -1,5 +1,44 @@
 {% extends "layout.html" %}
 
+{% block title %}
+    {{ user.username }}'s profile
+{% endblock %}
+
 {% block body %}
-    <p>TODO</p>
+    <div id="info">
+        <h3>{{ user.username }}</h3>
+        <p>Post count: {{ user.posts|length }}</p>
+        <p>Date joined: {{ user.date_created }}</p>
+        <p>Roles: {% for role in user.roles %}{{ role.name }} {% endfor %}</p>
+    </div>
+    <div id="posts">
+        <h3>Latest posts by {{ user.username }}</h3>
+        {% if recent_posts %}
+            <ol>
+                {% for post in recent_posts %}
+                    <li>
+                        <a href="{{ url_for("thread_view", thread_id=post.thread_id) }}">
+                            {{ post.content[:30] }}{% if post.content|length > 30 %}...{% endif %}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            No posts
+        {% endif %}
+    </div>
+    <div id="threads">
+        <h3>Latest threads by {{ user.username }}</h3>
+        {% if recent_threads %}
+            <ol>
+                {% for thread in recent_threads %}
+                    <li>
+                        <a href="{{ url_for("thread_view", thread_id=thread.id) }}">
+                            {{ thread.title }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            No threads
+        {% endif %}
+    </div>
 {% endblock %}

@@ -27,3 +27,16 @@ class Post(Base):
             post.thread_id = row[6]
             response.append(post)
         return response
+
+    @staticmethod
+    def find_latest_posts(user_id, i=5):
+        statement = text(
+            "SELECT * from post where post.account_id = :user_id ORDER BY date_modified DESC LIMIT :many"
+        ).params(user_id=user_id, many=i)
+        res = db.engine.execute(statement)
+        response = []
+        for row in res:
+            post = Post((row[4]))
+            post.thread_id = row[6]
+            response.append(post)
+        return response

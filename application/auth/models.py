@@ -27,6 +27,8 @@ class User(Base, UserMixin):
 
     posts = db.relationship("Post", backref="account", lazy=True, cascade="all, delete-orphan")
 
+    threads = db.relationship("Thread", backref="account", lazy=True, cascade="all, delete-orphan")
+
     roles = db.relationship("Role", secondary=user_role, backref="User")
 
     def __init__(self, name, username, password, active=False, roles=[]):
@@ -73,3 +75,5 @@ class User(Base, UserMixin):
         for row in res:
             response.append({"id": row[0], "name": row[1]})
         return response
+
+

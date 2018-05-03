@@ -34,3 +34,16 @@ class Thread(Base):
             thread.id = row[0]
             response.append(thread)
         return response
+
+    @staticmethod
+    def find_latest_threads(user_id, i=5):
+        statement = text(
+            "SELECT * from thread where thread.user_id = :user_id ORDER BY date_modified DESC LIMIT :i"
+        ).params(user_id=user_id, i=i)
+        res = db.engine.execute(statement)
+        response = []
+        for row in res:
+            thread = Thread(title=row[3], content=row[4], category_id=row[5], user_id=row[6])
+            thread.id = row[0]
+            response.append(thread)
+        return response
