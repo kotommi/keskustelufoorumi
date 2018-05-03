@@ -55,4 +55,5 @@ def user_panel(user_id):
         flash("Authentication error")
         return redirect(url_for("category_index"))
     return render_template("control/user.html", user=user_datastore.get_user(user_id),
-                           recent_posts=Post.find_latest_posts(user_id), recent_threads=Thread.find_latest_threads(user_id))
+                           recent_posts=Post.find_latest_posts(user_id),
+                           recent_threads=Thread.find_latest_threads(user_id))

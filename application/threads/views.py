@@ -43,6 +43,9 @@ def thread_delete(thread_id):
 @app.route("/thread/<thread_id>/", methods=["GET"])
 def thread_view(thread_id):
     thread = Thread.query.get(thread_id)
+    if not thread:
+        flash("No such thread")
+        redirect(url_for("category_index"))
     posts = thread.posts
 
     return render_template("thread/view.html", thread=thread, posts=posts, user_datastore=user_datastore)

@@ -9,7 +9,8 @@ from application.threads.models import Thread
 
 @app.route("/", methods=["GET"])
 def category_index():
-    return render_template("category/index.html", categories=Category.query.all(), posts=Post.find_recent(), threads=Thread.find_recent())
+    return render_template("category/index.html", categories=Category.query.all(), posts=Post.find_recent(),
+                           threads=Thread.find_recent())
 
 
 @app.route("/category/create", methods=["GET", "POST"])
