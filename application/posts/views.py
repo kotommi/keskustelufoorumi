@@ -26,7 +26,6 @@ def post_edit(post_id):
         form.content.data = escape(form.content.data)
 
         if form.validate() and (current_user.id == post.account_id or current_user.has_role("admin")):
-            post.content = form.content.data
             Post.query.filter(Post.id == post.id).update({'name': 'reply', 'content': form.content.data})
             db.session().commit()
             flash("Post successful!")
@@ -55,6 +54,7 @@ def post_delete(post_id):
 @login_required
 def post_create(thread_id):
     form = PostForm(request.form)
+    form.content.data = escape(form.content.data)
 
     if not form.validate():
         return render_template("post/new.html", form=form, thread_id=thread_id)
