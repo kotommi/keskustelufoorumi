@@ -1,5 +1,12 @@
 {% extends "layout.html" %}
 
+{% block title %}
+    Admin
+{% endblock %}
+
 {% block body %}
-    <p>TODO</p>
+    <div id="links">
+        <a href="{{ url_for("user_list") }}">User list</a>
+        <a href="{{ url_for("admin_promote") }}">Add admin</a>
+    </div>
 {% endblock %}

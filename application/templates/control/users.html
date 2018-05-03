@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    User list
+{% endblock %}
+
+{% block body %}
+    {% if users %}
+        {% for u in users %}
+            <div id="user">
+                Name: <a href="{{ url_for("user_panel", user_id=u.id) }}">{{ u.username }}</a>, Roles:
+                {% for r in u.roles %}
+                    {{ r.name }} {% endfor %}
+                {% if u.active %}<a href="{{ url_for("user_deactivate", user_id=u.id) }}">deactivate</a>
+                {% else %}<a href="{{ url_for("user_activate", user_id=u.id) }}">activate</a>
+                {% endif %}
+                <a href="{{ url_for("user_delete", user_id=u.id) }}">delete</a>
+            </div>
+        {% endfor %}
+
+    {% endif %}
+{% endblock %}

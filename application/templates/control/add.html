@@ -2,25 +2,20 @@
 {% from "macros.html" import  with_errors %}
 
 {% block title %}
-    New thread
+    Add admin
 {% endblock %}
 
-
 {% block body %}
-    <form method="POST" action="{{ url_for("thread_new", cat_id=cat_id) }}">
+    {{ error }}
+    <form method="POST" action="{{ url_for("admin_promote") }}">
         <table>
             <tr>
-                <td>{{ form.title.label }}</td>
+                <td>{{ form.username.label }}</td>
                 <td>
-                    {{ with_errors(form.title) }}
+                    {{ with_errors(form.username, style='font-weight: bold') }}
                 </td>
             </tr>
-            <tr>
-                <td>{{ form.content.label }}</td>
-                <td>
-                    {{ with_errors(form.content) }}
-                </td>
-            </tr>
+
             <tr>
                 <td colspan="2">
                     <input type="submit" value="Submit"/>

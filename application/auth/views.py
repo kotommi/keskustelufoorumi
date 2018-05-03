@@ -1,8 +1,9 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_security.utils import hash_password, verify_and_update_password, login_user, logout_user
+from flask_security import roles_required, login_required
 
 from application import app, db, user_datastore
-from application.auth.models import User, Role, user_role
+from application.auth.models import User
 from application.auth.forms import LoginForm, CreateForm
 
 
@@ -55,3 +56,38 @@ def auth_create():
 def auth_logout():
     logout_user()
     return redirect(url_for("category_index"))
+
+
+@app.route("/user/delete/<user_id>")
+@login_required
+@roles_required("admin")
+def user_delete(user_id):
+    return "TODO"
+
+
+@app.route("/user/deactivate/<user_id>")
+@login_required
+@roles_required("admin")
+def user_deactivate(user_id):
+    user = user_datastore.get_user(user_id)
+    if not user:
+        flash("No such user")
+        return redirect(url_for("admin_panel"))
+    user_datastore.deactivate_user(user)
+    user_datastore.commit()
+    flash("Deactivation successful")
+    return redirect(url_for("admin_panel"))
+
+
+@app.route("/user/activate/<user_id>")
+@login_required
+@roles_required("admin")
+def user_activate(user_id):
+    user = user_datastore.get_user(user_id)
+    if not user:
+        flash("No such user")
+        return redirect(url_for("admin_panel"))
+    user_datastore.activate_user(user)
+    user_datastore.commit()
+    flash("Activation successful")
+    return redirect(url_for("admin_panel"))

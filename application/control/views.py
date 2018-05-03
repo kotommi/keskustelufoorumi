@@ -4,14 +4,41 @@ from flask_security.decorators import roles_required, login_required, current_us
 from application import app, user_datastore
 from application.auth.models import User
 from application.category.models import Category
+from application.control.forms import AdminForm
 
 
 @app.route("/admin_panel", methods=["GET"])
+@login_required
 @roles_required('admin')
 def admin_panel():
     users = User.query.all()
     categories = Category.query.all()
     return render_template("control/admin.html", users=users, categories=categories)
+
+
+@app.route("/admin/users")
+@login_required
+@roles_required("admin")
+def user_list():
+    users = User.query.all()
+    return render_template("control/users.html", users=users)
+
+
+@app.route("/admin/add", methods=["GET", "POST"])
+@login_required
+@roles_required("admin")
+def admin_promote():
+    if request.method == "GET":
+        return render_template("control/add.html", form=AdminForm())
+    form = AdminForm(request.form)
+    new_admin = user_datastore.find_user(username=form.username.data)
+    if not new_admin:
+        flash("No such user")
+        return render_template("control/add.html", form=form)
+    user_datastore.add_role_to_user(new_admin, role="admin")
+    user_datastore.commit()
+    flash("Added new admin " + new_admin.username)
+    return redirect(url_for("admin_panel"))
 
 
 @app.route("/user/<user_id>", methods=["GET"])
