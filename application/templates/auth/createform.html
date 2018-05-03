@@ -1,6 +1,10 @@
 {% extends "layout.html" %}
 {% from "macros.html" import  with_errors %}
 
+{% block title %}
+    Register
+{% endblock %}
+
 
 {% block body %}
     <form method="POST" action="{{ url_for("auth_create") }}">

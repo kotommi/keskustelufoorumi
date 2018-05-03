@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block title %}
+    Edit post
+{% endblock %}
+
 {% block body %}
     <form method="POST" action="{{ url_for('post_edit', post_id = post.id) }}">
         {{ form.content.label }}

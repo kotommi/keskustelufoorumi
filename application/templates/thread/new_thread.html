@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block title %}
+    New thread
+{% endblock %}
+
 {% macro with_errors(field) %}
     <div class="form_field">
         {% if field.errors %}
