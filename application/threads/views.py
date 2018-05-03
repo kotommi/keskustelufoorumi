@@ -45,7 +45,7 @@ def thread_view(thread_id):
     thread = Thread.query.get(thread_id)
     if not thread:
         flash("No such thread")
-        redirect(url_for("category_index"))
+        return redirect(url_for("category_index"))
     posts = thread.posts
 
     return render_template("thread/view.html", thread=thread, posts=posts, user_datastore=user_datastore)
