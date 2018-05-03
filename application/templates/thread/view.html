@@ -4,40 +4,48 @@
     {{ thread.title }}
 {% endblock %}
 
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='newline.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div id="thread.title">
-        Title: {{ thread.title|trim|title }}
-        {% if current_user.is_authenticated and (current_user.id == thread.user_id or current_user.has_role("admin")) %}
-            <a href="{{ url_for("thread_delete", thread_id=thread.id) }}">Delete</a>
-        {% endif %}
-        </br>
-        By: {{ user_datastore.find_user(id=thread.user_id).username }} Date: {{ thread.date_created }}
-        {% if not thread.date_created == thread.date_modified %}
-            Edited: {{ thread.date_modified }}
-        {% endif %}
-    </div>
-    <div id="thread.content">
-        Content: {{ thread.content|safe|trim|wordwrap }} {# what about images/links? #}
-    </div>
+<div id="thread.title">
+    Title: {{ thread.title|trim|title }}
+    {% if current_user.is_authenticated and (current_user.id == thread.user_id or current_user.has_role("admin")) %}
+        <a href="{{ url_for("thread_delete", thread_id=thread.id) }}">Delete</a>
+    {% endif %}
+    <br>
+    By: {{ user_datastore.find_user(id=thread.user_id).username }} Date: {{ thread.date_created }}
+    {% if not thread.date_created == thread.date_modified %}
+        Edited: {{ thread.date_modified }}
+    {% endif %}
+</div>
+<div id="thread.content" class="content">
+    {% autoescape false %}
+    Content: {{ thread.content|trim|wordwrap|replace("\n", "<br>") }} {# what about images/links? #}
+    {% endautoescape %}
+</div>
 
-    <div id="posts"> {# todo: add username #}
-        {% for post in posts %}
-            <div id="post.id.{{ post.id }}">
-                {{ user_datastore.find_user(id=post.account_id).username }}:
-                {% if current_user.is_authenticated %}
-                    {% if current_user.id == post.account_id or current_user.has_role("admin") %}
-                        <a href="{{ url_for("post_edit", post_id=post.id) }}">Edit</a>
-                        <a href="{{ url_for("post_delete", post_id=post.id) }}">Delete</a>
-                    {% endif %}
-                {% endif %}
-            </div>
-            <div id="post.content.{{ post.id }}">
-                {{ post.content|safe|trim|wordwrap }}
-            </div>
-        {% endfor %}
+<div id="posts"> {# todo: add username #}
+    {% for post in posts %}
+    <div id="post.id.{{ post.id }}">
+        {{ user_datastore.find_user(id=post.account_id).username }}:
+        {% if current_user.is_authenticated %}
+            {% if current_user.id == post.account_id or current_user.has_role("admin") %}
+                <a href="{{ url_for("post_edit", post_id=post.id) }}">Edit</a>
+                <a href="{{ url_for("post_delete", post_id=post.id) }}">Delete</a>
+            {% endif %}
+        {% endif %}
     </div>
+    <div id="post.content.{{ post.id }}" class="content">
+        {% autoescape false %}
+        {{ post.content|trim|wordwrap|replace("\n", "<br>") }}
+        {% endautoescape %}
+    </div>
+    {% endfor %}
+</div>
 
-    <div id="reply">
-        <a href="{{ url_for("post_new", thread_id=thread.id) }}">Reply</a>
-    </div>
+<div id="reply">
+    <a href="{{ url_for("post_new", thread_id=thread.id) }}">Reply</a>
+</div>
 {% endblock %}
