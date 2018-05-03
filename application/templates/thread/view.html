@@ -17,12 +17,12 @@
         {% endif %}
     </p>
     <p id="thread.content">
-        Content: {{ thread.content|trim|wordwrap }} {# what about images/links? #}
+        Content: {{ thread.content|safe|trim|wordwrap }} {# what about images/links? #}
     </p>
 
     <p id="posts"> {# todo: add username #}
         {% for post in posts %}
-            <p id="post.id.{{ post.id }}">
+            <div id="post.id.{{ post.id }}">
                 {{ user_datastore.find_user(id=post.account_id).username }}:
                 {% if current_user.is_authenticated %}
                     {% if current_user.id == post.account_id or current_user.has_role("admin") %}
@@ -30,9 +30,9 @@
                         <a href="{{ url_for("post_delete", post_id=post.id) }}">Delete</a>
                     {% endif %}
                 {% endif %}
-            </p>
+            </div>
             <p id="post.content.{{ post.id }}">
-                {{ post.content|trim|wordwrap }}
+                {{ post.content|safe|trim|wordwrap }}
             </p>
         {% endfor %}
     </p>
