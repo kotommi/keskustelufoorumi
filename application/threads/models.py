@@ -4,8 +4,8 @@ from sqlalchemy import text
 
 
 class Thread(Base):
-    title = db.Column(db.String(144), nullable=False)
-    content = db.Column(db.String(1000), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.String(2000), nullable=False)
 
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)

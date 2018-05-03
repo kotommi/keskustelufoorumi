@@ -3,6 +3,7 @@ from flask import redirect, render_template, request, url_for, flash
 from flask_login import login_required, current_user
 from application.posts.models import Post
 from application.posts.forms import PostForm
+from html import escape
 
 
 @app.route("/posts/")
@@ -22,6 +23,8 @@ def post_edit(post_id):
     post = Post.query.get(post_id)
     if request.method == "POST":
         form = PostForm(request.form)
+        form.content.data = escape(form.content.data)
+
         if form.validate() and (current_user.id == post.account_id or current_user.has_role("admin")):
             post.content = form.content.data
             Post.query.filter(Post.id == post.id).update({'name': 'reply', 'content': form.content.data})
