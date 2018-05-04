@@ -13,7 +13,9 @@ class LoginForm(FlaskForm):
 
 class CreateForm(FlaskForm):
     username = StringField("Username",
-                           [validators.Length(min=4, max=16, message="Name has to be at least 4 characters"),
+                           [validators.Regexp('^\w+$',
+                                              message="Username must contain only letters numbers or underscore"),
+                            validators.Length(min=4, max=16, message="Name has to be at least 4 characters"),
                             validators.none_of(values=User.find_usernames(),
                                                message="Name already in use")])
     password = PasswordField("Password",

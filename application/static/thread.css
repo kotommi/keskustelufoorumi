@@ -1,18 +1,13 @@
+.post {
+    padding-top: 10px;
+    border: 1px solid black;
+    margin: 5px;
+}
+
 .info {
-    color: #000 !important;
-    background-color: #d0ecf7 !important
+    margin: 5px;
 }
 
 .content {
-    color: #000 !important;
-    background-color: #e7f5fb !important
+    margin: 5px;
 }
-
-.post {
-    padding-top: 10px
-}
-
- body {
-     color: #000;
-     background-color: #F5F5F5;
- }

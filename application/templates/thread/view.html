@@ -9,35 +9,39 @@
 {% endblock %}
 
 {% block body %}
-<div id="thread.title" class="info">
+<p id="thread.title" class="info">
     Title: {{ thread.title|trim|title }}
     {% if current_user.is_authenticated and (current_user.id == thread.user_id or current_user.has_role("admin")) %}
         <a href="{{ url_for("thread_delete", thread_id=thread.id) }}">Delete</a>
     {% endif %}
     <br>
-    By: {{ user_datastore.find_user(id=thread.user_id).username }} Date: {{ thread.date_created }}
+    By: {{ user_datastore.find_user(id=thread.user_id).username }} @ {{ thread.date_created }}
     {% if not thread.date_created == thread.date_modified %}
         Edited: {{ thread.date_modified }}
     {% endif %}
-</div>
-<div id="thread.content" class="content">
+</p>
+<p id="thread.content" class="content">
     {% autoescape false %}
-    Content: {{ thread.content|trim|wordwrap|replace("\n", "<br>") }} {# what about images/links? #}
+    Content: {{ thread.content|trim|wordwrap|replace("\n", "<br>") }}
     {% endautoescape %}
-</div>
+</p>
 
-<div class="postwrapper"> {# todo: add username #}
+<div class="postwrapper">
     {% for post in posts %}
     <div class="post">
-        <div id="post.id.{{ post.id }}" class="info">
+        <p id="post.id.{{ post.id }}" class="info">
             {{ user_datastore.find_user(id=post.account_id).username }}:
+            @ {{ post.date_created }}
+            {% if not post.date_created == post.date_modified %}
+                Edited: {{ post.date_modified }}
+            {% endif %}
             {% if current_user.is_authenticated %}
                 {% if current_user.id == post.account_id or current_user.has_role("admin") %}
                     <a href="{{ url_for("post_edit", post_id=post.id) }}">Edit</a>
                     <a href="{{ url_for("post_delete", post_id=post.id) }}">Delete</a>
                 {% endif %}
             {% endif %}
-        </div>
+        </p>
         <div id="post.content.{{ post.id }}" class="content">
             {% autoescape false %}
             <p>{{ post.content|trim|wordwrap|replace("\n", "<br>") }}</p>

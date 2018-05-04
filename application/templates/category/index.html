@@ -14,34 +14,36 @@
             <a href="{{ url_for("category_create") }}">Create new category</a>
         {% endif %}
     </div>
-    <div id="posts">
-        <h3>Recent posts</h3>
-        {% if posts %}
-            <ol>
-                {% for post in posts %}
-                    <li>
-                        <a href="{{ url_for("thread_view", thread_id = post.thread_id) }}">
-                            {{ post.content[:20] }}{% if post.content|length > 20 %}...{% endif %}</a>
-                    </li>
-                {% endfor %}
-            </ol>
-        {% else %}
-            No messages :(
-        {% endif %}
-    </div>
-    <div id="threads">
-        <h3>Recent threads</h3>
-        {% if threads %}
-            <ol>
-                {% for thread in threads %}
-                    <li>
-                        <a href="{{ url_for("thread_view", thread_id = thread.id) }}">{{ thread.title }}</a>
-                    </li>
-                {% endfor %}
-            </ol>
-        {% else %}
-            No threads ):
-        {% endif %}
+    <div class="horizontal_wrapper">
+        <div id="posts">
+            <h3>Recent posts</h3>
+            {% if posts %}
+                <ol>
+                    {% for post in posts %}
+                        <li>
+                            <a href="{{ url_for("thread_view", thread_id = post.thread_id) }}">
+                                {{ post.content[:20] }}{% if post.content|length > 20 %}...{% endif %}</a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                No messages :(
+            {% endif %}
+        </div>
+        <div id="threads">
+            <h3>Recent threads</h3>
+            {% if threads %}
+                <ol>
+                    {% for thread in threads %}
+                        <li>
+                            <a href="{{ url_for("thread_view", thread_id = thread.id) }}">{{ thread.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                No threads ):
+            {% endif %}
+        </div>
     </div>
 
 {% endblock %}
