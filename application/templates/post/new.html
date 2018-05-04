@@ -8,11 +8,13 @@
     <form method="POST" action="{{ url_for('post_create', thread_id=thread_id) }}">
         {{ form.content.label }}
         {{ form.content }}
-        <ul>
-            {% for error in form.content.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
+        {% if form.content.errors %}
+            <ul>
+                {% for error in form.content.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <input type="submit" value="Submit reply"/>
     </form>
 {% endblock %}
