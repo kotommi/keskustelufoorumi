@@ -26,21 +26,23 @@
     {% endautoescape %}
 </div>
 
-<div id="posts"> {# todo: add username #}
+<div class="postwrapper"> {# todo: add username #}
     {% for post in posts %}
-    <div id="post.id.{{ post.id }}" class="info">
-        {{ user_datastore.find_user(id=post.account_id).username }}:
-        {% if current_user.is_authenticated %}
-            {% if current_user.id == post.account_id or current_user.has_role("admin") %}
-                <a href="{{ url_for("post_edit", post_id=post.id) }}">Edit</a>
-                <a href="{{ url_for("post_delete", post_id=post.id) }}">Delete</a>
+    <div class="post">
+        <div id="post.id.{{ post.id }}" class="info">
+            {{ user_datastore.find_user(id=post.account_id).username }}:
+            {% if current_user.is_authenticated %}
+                {% if current_user.id == post.account_id or current_user.has_role("admin") %}
+                    <a href="{{ url_for("post_edit", post_id=post.id) }}">Edit</a>
+                    <a href="{{ url_for("post_delete", post_id=post.id) }}">Delete</a>
+                {% endif %}
             {% endif %}
-        {% endif %}
-    </div>
-    <div id="post.content.{{ post.id }}" class="content">
-        {% autoescape false %}
-        {{ post.content|trim|wordwrap|replace("\n", "<br>") }}
-        {% endautoescape %}
+        </div>
+        <div id="post.content.{{ post.id }}" class="content">
+            {% autoescape false %}
+            <p>{{ post.content|trim|wordwrap|replace("\n", "<br>") }}</p>
+            {% endautoescape %}
+        </div>
     </div>
     {% endfor %}
 </div>
