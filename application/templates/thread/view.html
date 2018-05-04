@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block style %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='newline.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='thread.css') }}">
 {% endblock %}
 
 {% block body %}
-<div id="thread.title">
+<div id="thread.title" class="info">
     Title: {{ thread.title|trim|title }}
     {% if current_user.is_authenticated and (current_user.id == thread.user_id or current_user.has_role("admin")) %}
         <a href="{{ url_for("thread_delete", thread_id=thread.id) }}">Delete</a>
@@ -28,7 +28,7 @@
 
 <div id="posts"> {# todo: add username #}
     {% for post in posts %}
-    <div id="post.id.{{ post.id }}">
+    <div id="post.id.{{ post.id }}" class="info">
         {{ user_datastore.find_user(id=post.account_id).username }}:
         {% if current_user.is_authenticated %}
             {% if current_user.id == post.account_id or current_user.has_role("admin") %}
