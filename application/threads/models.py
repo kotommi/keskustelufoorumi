@@ -13,10 +13,7 @@ class Thread(Base):
     posts = db.relationship("Post", backref="Thread", lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, title, content, category_id, user_id):
-        """
-        :type title: String
-        :type content: String
-        """
+
         self.title = title
         self.content = content
         self.category_id = category_id
@@ -38,7 +35,7 @@ class Thread(Base):
     @staticmethod
     def find_latest_threads(user_id, i=5):
         statement = text(
-            "SELECT * from thread where thread.user_id = :user_id ORDER BY date_modified DESC LIMIT :i"
+            "SELECT * FROM thread WHERE thread.user_id = :user_id ORDER BY date_modified DESC LIMIT :i"
         ).params(user_id=user_id, i=i)
         res = db.engine.execute(statement)
         response = []

@@ -11,10 +11,5 @@ class Category(Base):
     threads = db.relationship("Thread", backref="category", lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, title, description):
-        """
-        :type title: String
-        :type description: String
-        """
-
         self.title = title
         self.description = description

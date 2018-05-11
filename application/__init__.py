@@ -72,6 +72,5 @@ def create_user():
 from application.auth import views
 from application.category import views
 from application.threads import views
-from application import views
 from application.posts import views
 from application.control import views
