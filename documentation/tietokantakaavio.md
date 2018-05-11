@@ -68,4 +68,5 @@ CREATE TABLE category_role (
 	category_id INTEGER, 
 	FOREIGN KEY(role_id) REFERENCES role (id), 
 	FOREIGN KEY(category_id) REFERENCES category (id)
-);```
+);
+```
