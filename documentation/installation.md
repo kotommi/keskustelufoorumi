@@ -13,6 +13,3 @@ Remember to remove the testadmin line from `__init__.py`.
 
 ## Heroku
 Check out the Heroku dev center for instructions on how to migrate an existing app there. You need a Postgresql database from them too. The app is configured to work there without any modifications to the code.
-
- 
-
