@@ -49,7 +49,8 @@ def auth_create():
     user_datastore.activate_user(new_user)
     user_datastore.commit()
     flash("Registration complete!")
-    return redirect(url_for("auth_login"))
+    login_user(new_user)
+    return redirect(url_for("category_index"))
 
 
 @app.route("/auth/logout")

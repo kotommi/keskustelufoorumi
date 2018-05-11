@@ -42,7 +42,7 @@ def post_edit(post_id):
 @login_required
 def post_delete(post_id):
     post = Post.query.get(post_id)
-    if post.account_id != current_user.id or not current_user.has_role("admin"):
+    if post.account_id != current_user.id and not current_user.has_role("admin"):
         flash("Authentication error")
         return redirect(url_for("category_index"))
     db.session().delete(post)
